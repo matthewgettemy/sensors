@@ -17,7 +17,7 @@ func sensorById(c *gin.Context) {
 	sensor, err := getSensorById(id)
 
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Sensor not found."})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "sensor not found"})
 	}
 
 	c.IndentedJSON(http.StatusOK, sensor)
@@ -34,11 +34,22 @@ func createSensor(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newSensor)
 }
 
+func closestSensorByLocation(c *gin.Context) {
+	var loc location
+	if err := c.BindJSON(loc); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": err})
+		return
+	}
+	id := closestSensorId(loc)
+	closestSensor := sensors[id]
+	c.IndentedJSON(http.StatusFound, closestSensor)
+}
+
 func updateSensorById(c *gin.Context) {
 	id, ok := c.GetQuery("id")
 
 	if !ok {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing id query parameter."})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "missing id query parameter"})
 	}
 
 	sensor, err := getSensorById(id)
