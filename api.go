@@ -40,7 +40,9 @@ func closestSensorByLocation(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": err})
 		return
 	}
-	id := closestSensorId(loc)
+	metric := true
+	id, dist := closestSensorId(loc, metric)
+	fmt.Printf("Closest sensor %s is %f km away.\n", id, dist)
 	closestSensor := sensors[id]
 	c.IndentedJSON(http.StatusFound, closestSensor)
 }
