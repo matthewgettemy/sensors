@@ -20,11 +20,6 @@ func TestGetSensorById(t *testing.T) {
 	if sensorFound.Name != testSensor.Name {
 		t.Errorf("Got %#v want %#v.", sensorFound, testSensor)
 	}
-	/*
-		for id, sensor := range sensors {
-			fmt.Printf("%s: %#v\n", id, sensor)
-		}
-	*/
 }
 
 func TestClosestSensorId(t *testing.T) {
@@ -33,7 +28,6 @@ func TestClosestSensorId(t *testing.T) {
 	cities := cities.GetCityData("cities/cities.json")
 	targetCity := cities[0]
 	targetLocation := location{Latitude: targetCity.Latitude, Longitude: targetCity.Longitude}
-	fmt.Println(targetCity.City)
 
 	testLocation := location{Latitude: targetLocation.Latitude + 0.01, Longitude: targetLocation.Longitude + 0.01}
 	testId := "dummy_id"
@@ -51,4 +45,5 @@ func TestOneSensorClosest(t *testing.T) {
 	testLocation := location{Latitude: 50.1, Longitude: 100.1}
 	foundId, dist := closestSensorId(testLocation, true)
 	fmt.Printf("id=%s, dist=%f km\n", foundId, dist)
+
 }

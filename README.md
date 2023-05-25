@@ -18,10 +18,12 @@ in a professional project (i.e.: README, tests, input validation, etc).
 
 | METHOD | Endpoint |
 | :----- | :------- |
+| GET    | /        |
 | GET    | /sensors |
 | POST   | /sensors |
 | GET    | /sensors/:id |
-| PATCH  | /update  |
+| GET    | /sensors/closest |
+| PUT    | /update/:id  |
 
 ### Sensor Object
 ```go
@@ -46,6 +48,14 @@ Sensor metadata returns the following status codes in its API:
 | :-- | :--- |
 | 200 | `OK` |
 | 201 | `CREATED` |
+| 302 | `FOUND` |
 | 400 | `BAD REQUEST` |
 | 404 | `NOT FOUND` |
-| 500 | `INTERNAL SERVER ERROR` |
+
+
+## TODO
+- authentication
+- containerization
+- data
+	- concurrency safe
+	- persistence

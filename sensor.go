@@ -17,7 +17,7 @@ const (
 	vibration   string = "vibration"
 )
 
-var types = []string{temperature, pressure, vibration}
+var sensorTypes = []string{temperature, pressure, vibration}
 
 // JSON encoder can only see, and therefore only encode, exported fields in a struct
 type sensor struct {
@@ -41,10 +41,6 @@ func getSensorById(id string) (*sensor, error) {
 		return nil, errors.New("sensor not found")
 	}
 	return &targetSensor, nil
-}
-
-func updateSensor() {
-
 }
 
 func closestSensorId(loc location, metric bool) (string, float64) {
@@ -86,7 +82,7 @@ func addDummySensors(numberToAdd int) {
 	cities := cities.GetCityData("cities/cities.json")
 	for i := 1; i <= numberToAdd; i++ {
 		randomCity := cities[rand.Intn(len(cities))]
-		randomType := types[rand.Intn(len(types))]
+		randomType := sensorTypes[rand.Intn(len(sensorTypes))]
 		// fmt.Printf("Adding %s sensor at city %s.\n", randomType, randomCity.City)
 		newSensor := sensor{
 			Name:     randomType + strconv.Itoa(i),

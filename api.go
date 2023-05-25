@@ -8,53 +8,69 @@ import (
 	"github.com/google/uuid"
 )
 
+func defaultHandler(c *gin.Context) {
+	// GET /
+	c.JSON(http.StatusOK, gin.H{"message": "Sensor Metadata Application"})
+}
+
 func getSensors(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, sensors)
+	// GET /sensors
+	c.JSON(http.StatusOK, sensors)
 }
 
 func sensorById(c *gin.Context) {
+	// GET /sensors/:id
 	id := c.Param("id")
 	sensor, err := getSensorById(id)
 
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "sensor not found"})
+		c.JSON(http.StatusNotFound, gin.H{"message": "sensor not found"})
 	}
 
-	c.IndentedJSON(http.StatusOK, sensor)
+	c.JSON(http.StatusOK, sensor)
 }
 
 func createSensor(c *gin.Context) {
+	// POST /sensors
 	var newSensor sensor
 
 	if err := c.BindJSON(&newSensor); err != nil {
 		return
 	}
-
-	sensors[uuid.New().String()] = newSensor
-	c.IndentedJSON(http.StatusCreated, newSensor)
+	newId := uuid.New().String()
+	sensors[newId] = newSensor
+	c.JSON(http.StatusCreated, newId)
 }
 
 func closestSensorByLocation(c *gin.Context) {
+	// GET /sensors/closest
 	var loc location
 	if err := c.BindJSON(loc); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": err})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err})
 		return
 	}
 	metric := true
 	id, dist := closestSensorId(loc, metric)
 	fmt.Printf("Closest sensor %s is %f km away.\n", id, dist)
 	closestSensor := sensors[id]
-	c.IndentedJSON(http.StatusFound, closestSensor)
+	c.JSON(http.StatusFound, closestSensor)
 }
 
 func updateSensorById(c *gin.Context) {
-	id, ok := c.GetQuery("id")
-
-	if !ok {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "missing id query parameter"})
+	// PUT /update/:id
+	id := c.Param("id")
+	_, err := getSensorById(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "sensor not found"})
+		return
 	}
 
-	sensor, err := getSensorById(id)
-	fmt.Printf("%+v", sensor)
-	fmt.Printf("%s", err)
+	var newSensor sensor
+	if err := c.ShouldBindJSON(&newSensor); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	sensors[id] = newSensor
+	c.JSON(http.StatusOK, newSensor)
 }
