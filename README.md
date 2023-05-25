@@ -22,7 +22,7 @@ in a professional project (i.e.: README, tests, input validation, etc).
 | GET    | /sensors |
 | POST   | /sensors |
 | GET    | /sensors/:id |
-| GET    | /sensors/closest |
+| POST   | /sensors/closest |
 | PUT    | /update/:id  |
 
 ### Sensor Object
@@ -56,6 +56,8 @@ Sensor metadata returns the following status codes in its API:
 ## TODO
 - authentication
 - containerization
+- validation of incoming data
+- add PATCH method for updating specific metadata fields
 - data
 	- concurrency safe
 	- persistence

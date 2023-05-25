@@ -19,9 +19,12 @@ const (
 
 var sensorTypes = []string{temperature, pressure, vibration}
 
-// JSON encoder can only see, and therefore only encode, exported fields in a struct
+/*
+Sensor JSON Example
+{"name": "sensor3", "location": {"latitude": 2.0, "longitude": 2.0}, "tags": ["tag1", "tag2"]}
+*/
 type sensor struct {
-	Name     string   `json:"id"`
+	Name     string   `json:"name"`
 	Location location `json:"location"`
 	Tags     []string `json:"tags,omitempty"`
 }

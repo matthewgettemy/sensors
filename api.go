@@ -43,9 +43,10 @@ func createSensor(c *gin.Context) {
 }
 
 func closestSensorByLocation(c *gin.Context) {
-	// GET /sensors/closest
+	// POST /sensors/closest
 	var loc location
-	if err := c.BindJSON(loc); err != nil {
+	if err := c.BindJSON(&loc); err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"message": err})
 		return
 	}

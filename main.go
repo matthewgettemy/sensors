@@ -18,7 +18,7 @@ func main() {
 	router.POST("/sensors", createSensor)
 	router.GET("/sensors", getSensors)
 	router.GET("/sensors/:id", sensorById)
-	router.GET("/sensors/closest", closestSensorByLocation)
+	router.POST("/sensors/closest", closestSensorByLocation)
 	router.PUT("/update/:id", updateSensorById)
 	router.Run("localhost:8080")
 }
